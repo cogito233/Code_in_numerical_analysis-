@@ -5,7 +5,7 @@ int n,k,np,nr,nb,ne;
 double a[500][500],f[500][500],X[500];
 bool flag[500];
 
-void addEquationU(int x, int y, int dU) {//Ua-Ub=dU, 
+void addEquationU(int x, int y, double dU) {//Ua-Ub=dU, 
 	//cout<<x<<' '<<y<<' '<<dU<<endl;
 	ne++;
 	a[ne][x] = 1;
@@ -16,7 +16,7 @@ void addEquationU(int x, int y, int dU) {//Ua-Ub=dU,
 	a[y][ne] += 1;
 }
 
-void addEquationR(int x, int y, int R) {//dI=(Ua-Ub)/R,Ia-=dI,Ib+=dI
+void addEquationR(int x, int y, double R) {//dI=(Ua-Ub)/R,Ia-=dI,Ib+=dI
 	//cout<<x<<' '<<y<<' '<<R<<endl;
 	a[x][x] -= 1.0/R;
 	a[x][y] += 1.0/R;
@@ -83,20 +83,26 @@ void GaussianElimination() {
 }
 
 signed main() {
-	n = 3;//3 point
+	n = 5;//3 point
 	ne = n;//numver of equation
-	np=1,nr=3,nb=0;
+	np=1,nr=3,nb=2;
 	k = n+np+nb;//number of variable
-	int P[10][3] = {
-	{1,3,10}
+	double P[10][3] = {
+	{2,3,5.68822},
+	{3,4,10},
+	{6,5,10}
 	};
-	int R[10][3] = {
-	{1,2,5},
-	{2,3,10},
-	{2,3,10}
+	double R[10][3] = {
+	{2,1,1},
+	{1,4,2},
+	{1,5,1.859},
+	{4,5,5},
+	{2,5,10}
 	};//a,b,R
-	int B[10][3] = {
+	double B[10][3] = {
 	//{1,2,3}
+	{4,3,2.2},
+	{5,3,2.8}
 	};
 	// input
 	
@@ -117,13 +123,13 @@ signed main() {
 	while (c!='E') {
 		cin>>x;
 		if (c == 'R') {
-			cout<<"dU="<<X[R[x][0]]-X[R[x][1]]<<endl;
-			cout<<"I="<<(X[R[x][0]]-X[R[x][1]])/R[x][2]<<endl;
-			cout<<"P="<<(X[R[x][0]]-X[R[x][1]])*(X[R[x][0]]-X[R[x][1]])/R[x][2]<<endl;
+			cout<<"dU="<<X[(int)R[x][0]]-X[(int)R[x][1]]<<endl;
+			cout<<"I="<<(X[(int)R[x][0]]-X[(int)R[x][1]])/R[x][2]<<endl;
+			cout<<"P="<<(X[(int)R[x][0]]-X[(int)R[x][1]])*(X[(int)R[x][0]]-X[(int)R[x][1]])/R[x][2]<<endl;
 		}else if (c == 'B') {
-			cout<<"dU="<<X[B[x][0]]-X[B[x][1]]<<endl;
-			cout<<"I="<<X[n+nr+x]<<endl;
-			cout<<"P="<<(X[B[x][0]]-X[B[x][1]])*X[n+nr+x]<<endl;
+			cout<<"dU="<<X[(int)B[x][0]]-X[(int)B[x][1]]<<endl;
+			cout<<"I="<<X[n+np+x+1]<<endl;
+			cout<<"P="<<(X[(int)B[x][0]]-X[(int)B[x][1]])*X[n+np+x+1]<<endl;
 		}
 		cin>>c;
 	}
